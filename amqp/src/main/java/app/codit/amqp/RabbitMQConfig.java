@@ -16,36 +16,27 @@ public class RabbitMQConfig {
 
     private final ConnectionFactory connectionFactory;
 
-    /*
-        Send messages to queue
-     */
     @Bean
     public AmqpTemplate amqpTemplate() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-
-        rabbitTemplate.setMessageConverter(jacksonConvertor());
-
+        rabbitTemplate.setMessageConverter(jacksonConverter());
         return rabbitTemplate;
     }
 
-    /*
-        Receive messages from queue
-     */
     @Bean
     public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory() {
         SimpleRabbitListenerContainerFactory factory =
                 new SimpleRabbitListenerContainerFactory();
-
         factory.setConnectionFactory(connectionFactory);
-
-        factory.setMessageConverter(jacksonConvertor());
-
+        factory.setMessageConverter(jacksonConverter());
         return factory;
     }
 
     @Bean
-    public MessageConverter jacksonConvertor() {
-        MessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
+    public MessageConverter jacksonConverter() {
+        MessageConverter jackson2JsonMessageConverter =
+                new Jackson2JsonMessageConverter();
         return jackson2JsonMessageConverter;
     }
+
 }
